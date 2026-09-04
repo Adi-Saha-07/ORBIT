@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentSessionId = null;
     let currentAnalysisData = null;
     let isDraggingCurtain = false;
-    let activeModelType = "siamese_unet"; // Default to high-accuracy PyTorch Siamese U-Net
+    let activeModelType = "classical"; // Default to instant, robust Classical CV for cloud compatibility
 
     const fileState = {
         before: null,
@@ -339,13 +339,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: formData,
             });
 
-            const data = await response.json();
+            let data;
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                data = await response.json();
+            } else {
+                throw new Error(`Server returned HTTP ${response.status} (${response.statusText || 'Error'}). The server may still be initializing.`);
+            }
 
             if (response.ok && data.success) {
                 currentSessionId = data.session_id;
                 sessionBadge.textContent = `SESSION: ${data.session_id.substring(0, 8).toUpperCase()}`;
 
-                if (btnUploadText) btnUploadText.textContent = "Running AI Detection...";
+                if (btnUploadText) btnUploadText.textContent = "Running Analysis...";
                 await executeAnalysis(0.35, activeModelType);
             } else {
                 alert(data.error || "Upload failed. Please check image formats.");
@@ -384,11 +390,23 @@ document.addEventListener("DOMContentLoaded", () => {
                 }),
             });
 
-            const data = await res.json();
+            let data;
+            const contentType = res.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                data = await res.json();
+            } else {
+                throw new Error(`Server returned HTTP ${res.status} (${res.statusText || 'Error'}). If using free cloud hosting, the instance may be constrained.`);
+            }
 
             if (res.ok && data.success) {
                 currentAnalysisData = data;
-                pipelineStatus.textContent = modelType === "siamese_unet" ? "SIAMESE AI" : "CLASSICAL CV";
+                if (data.fallback_applied) {
+                    activeModelType = "classical";
+                    modelTabs.forEach((t) => {
+                        t.classList.toggle("active", t.getAttribute("data-model") === "classical");
+                    });
+                }
+                pipelineStatus.textContent = data.model_type === "siamese_unet" ? "SIAMESE AI" : "CLASSICAL CV";
 
                 // Populate and activate results view
                 populateInspectionDashboard(data);

@@ -244,12 +244,13 @@
                         <!-- Dual Model Switcher -->
                         <div class="segmented-control">
                             <span class="segmented-label">ENGINE:</span>
-                            <button type="button" class="segment-btn active btn-model-tab" data-model="siamese_unet">
+                            <button type="button" class="segment-btn active btn-model-tab" data-model="classical">
+                                <span>Classical CV (ORB + SSIM)</span>
+                                <span class="pill-chip">FAST & RELIABLE</span>
+                            </button>
+                            <button type="button" class="segment-btn btn-model-tab" data-model="siamese_unet">
                                 <span>PyTorch AI (Siamese U-Net)</span>
                                 <span class="pill-chip">ACCURATE</span>
-                            </button>
-                            <button type="button" class="segment-btn btn-model-tab" data-model="classical">
-                                <span>Classical CV (ORB + SSIM)</span>
                             </button>
                         </div>
                     </div>

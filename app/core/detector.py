@@ -216,13 +216,26 @@ def detect_changes(
     Swappable between Classical SSIM (fast baseline) and Siamese U-Net (deep learning).
     """
     if model_type == "siamese_unet":
-        from app.core.ml_inference import predict_change_siamese
-        return predict_change_siamese(
-            img_reference=img_reference,
-            img_target=img_target,
-            threshold=sensitivity,
-            min_contour_area=min_contour_area,
-        )
+        try:
+            from app.core.ml_inference import predict_change_siamese
+            return predict_change_siamese(
+                img_reference=img_reference,
+                img_target=img_target,
+                threshold=sensitivity,
+                min_contour_area=min_contour_area,
+            )
+        except Exception as err:
+            import logging
+            logging.warning(f"[ORBIT-FALLBACK] Siamese U-Net inference failed ({err}). Gracefully falling back to Classical CV.")
+            diff_intensity, filtered_mask, metrics = detect_changes_ssim(
+                img_reference=img_reference,
+                img_target=img_target,
+                sensitivity=sensitivity,
+                min_contour_area=min_contour_area,
+            )
+            metrics["fallback_applied"] = True
+            metrics["fallback_reason"] = f"Deep learning runtime constrained ({str(err)}). Reverted to Classical CV."
+            return diff_intensity, filtered_mask, metrics
 
     return detect_changes_ssim(
         img_reference=img_reference,

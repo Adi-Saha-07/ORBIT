@@ -216,13 +216,15 @@ def analyze_session():
     save_image_bgr(diff_heatmap, path_heatmap)
     save_image_bgr(diff_overlay, path_overlay)
 
-    pipeline_name = "DEEP_LEARNING_SIAMESE_UNET_V2" if model_type == "siamese_unet" else "CLASSICAL_ORB_SSIM_V1"
+    is_fallback = bool(detection_metrics.get("fallback_applied", False))
+    pipeline_name = "DEEP_LEARNING_SIAMESE_UNET_V2" if (model_type == "siamese_unet" and not is_fallback) else "CLASSICAL_ORB_SSIM_V1"
 
     return jsonify({
         "success": True,
         "session_id": session_id,
         "pipeline": pipeline_name,
-        "model_type": model_type,
+        "model_type": "classical" if is_fallback else model_type,
+        "fallback_applied": is_fallback,
         "alignment": align_telemetry,
         "detection": detection_metrics,
         "artifacts": {
