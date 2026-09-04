@@ -244,12 +244,14 @@
                         <!-- Dual Model Switcher -->
                         <div class="segmented-control">
                             <span class="segmented-label">ENGINE:</span>
-                            <button type="button" class="segment-btn active btn-model-tab" data-model="classical">
-                                <span>Classical CV (ORB + SSIM)</span>
-                                <span class="pill-chip">FAST & RELIABLE</span>
+                            <button type="button" class="segment-btn active btn-model-tab" data-model="classical" title="Classical CV (ORB + SSIM)">
+                                <span class="btn-text-full">Classical CV (ORB + SSIM)</span>
+                                <span class="btn-text-short">Classical CV</span>
+                                <span class="pill-chip">FAST</span>
                             </button>
-                            <button type="button" class="segment-btn btn-model-tab" data-model="siamese_unet">
-                                <span>PyTorch AI (Siamese U-Net)</span>
+                            <button type="button" class="segment-btn btn-model-tab" data-model="siamese_unet" title="PyTorch AI (Siamese U-Net)">
+                                <span class="btn-text-full">PyTorch AI (Siamese U-Net)</span>
+                                <span class="btn-text-short">PyTorch AI</span>
                                 <span class="pill-chip">ACCURATE</span>
                             </button>
                         </div>
@@ -356,15 +358,18 @@
                         <div class="view-tabs view-mode-tabs">
                             <button type="button" class="tab-pill active" data-view="sidebyside">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tab-icon"><rect x="2" y="3" width="6" height="18" rx="1"/><rect x="9" y="3" width="6" height="18" rx="1"/><rect x="16" y="3" width="6" height="18" rx="1"/></svg>
-                                <span>3-Way View (Before | After | Changes)</span>
+                                <span class="btn-text-full">3-Way View (Before | After | Changes)</span>
+                                <span class="btn-text-short">3-Way Split</span>
                             </button>
                             <button type="button" class="tab-pill" data-view="curtain">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tab-icon"><path d="M12 3v18M3 12h18"/></svg>
-                                <span>Interactive Before/After Slider</span>
+                                <span class="btn-text-full">Interactive Slider Scanner</span>
+                                <span class="btn-text-short">Slider Scanner</span>
                             </button>
                             <button type="button" class="tab-pill" data-view="layer">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tab-icon"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                                <span>Thermal Heatmap</span>
+                                <span class="btn-text-full">Thermal Heatmap & Layers</span>
+                                <span class="btn-text-short">Thermal Heatmap</span>
                             </button>
                         </div>
 
@@ -417,10 +422,12 @@
                                 <div class="curtain-mode-switch">
                                     <span class="control-label">Reveal:</span>
                                     <button type="button" class="btn-curtain-mode active" data-reveal="overlay">
-                                        <span>Detected Changes (Red Highlights)</span>
+                                        <span class="btn-text-full">Detected Changes (Red Highlights)</span>
+                                        <span class="btn-text-short">Detected Changes</span>
                                     </button>
                                     <button type="button" class="btn-curtain-mode" data-reveal="target">
-                                        <span>Recent Satellite Image (T-1)</span>
+                                        <span class="btn-text-full">Recent Satellite Image (T-1)</span>
+                                        <span class="btn-text-short">Recent Frame (T-1)</span>
                                     </button>
                                 </div>
                                 <div class="curtain-slider-wrapper">
@@ -448,8 +455,8 @@
                                     <div class="handle-line"></div>
                                 </div>
 
-                                <div class="viewport-badge badge-left">◀ Original Baseline (Before)</div>
-                                <div class="viewport-badge badge-right" id="curtain-badge-right">Detected Changes (In Red) ▶</div>
+                                <div class="viewport-badge badge-left">◀ Baseline (T-0)</div>
+                                <div class="viewport-badge badge-right" id="curtain-badge-right">Detected Changes ▶</div>
                             </div>
                         </div>
 
@@ -462,10 +469,22 @@
 
                             <div class="layer-sub-bar">
                                 <div class="layer-buttons">
-                                    <button type="button" class="btn-layer active" data-layer="overlay">Detected Changes (Red Outlines)</button>
-                                    <button type="button" class="btn-layer" data-layer="heatmap">Thermal Heatmap</button>
-                                    <button type="button" class="btn-layer" data-layer="target">Clean Recent Image</button>
-                                    <button type="button" class="btn-layer" data-layer="reference">Clean Baseline Image</button>
+                                    <button type="button" class="btn-layer active" data-layer="overlay">
+                                        <span class="btn-text-full">Detected Changes (Red Outlines)</span>
+                                        <span class="btn-text-short">Change Outlines</span>
+                                    </button>
+                                    <button type="button" class="btn-layer" data-layer="heatmap">
+                                        <span class="btn-text-full">Thermal Heatmap Blend</span>
+                                        <span class="btn-text-short">Thermal Heatmap</span>
+                                    </button>
+                                    <button type="button" class="btn-layer" data-layer="target">
+                                        <span class="btn-text-full">Clean Recent Image (T-1)</span>
+                                        <span class="btn-text-short">Recent (T-1)</span>
+                                    </button>
+                                    <button type="button" class="btn-layer" data-layer="reference">
+                                        <span class="btn-text-full">Clean Baseline Image (T-0)</span>
+                                        <span class="btn-text-short">Baseline (T-0)</span>
+                                    </button>
                                 </div>
                                 <div class="opacity-slider-box" id="opacity-control-group" style="display: none;">
                                     <span class="opacity-label">Blend:</span>

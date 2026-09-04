@@ -802,15 +802,18 @@ body.orbit-body {
     justify-content: space-between;
     align-items: center;
     padding: 0.75rem 1.4rem;
+    gap: 0.75rem;
     background: var(--card-header-bg);
     border-top: 1px solid var(--border-subtle);
     font-family: var(--font-mono);
     font-size: 0.75rem;
+    box-sizing: border-box;
 }
 
 .footer-filename {
     color: var(--text-secondary);
-    max-width: 220px;
+    flex: 1;
+    min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -818,6 +821,7 @@ body.orbit-body {
 
 .footer-filesize {
     color: var(--text-muted);
+    flex-shrink: 0;
 }
 
 /* Center Flow Arrow */
@@ -1955,19 +1959,63 @@ body.orbit-body {
     }
 }
 
+/* ==========================================================================
+   MOBILE & TABLET RESPONSIVE SYSTEM
+   Optimized for touchscreens, mobile viewports (320px - 768px), and ergonomics
+   ========================================================================== */
+
+/* Responsive Text Toggles */
+.btn-text-short {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    .btn-text-full {
+        display: none !important;
+    }
+    .btn-text-short {
+        display: inline !important;
+    }
+}
+
+/* Tablet & Smaller Laptops (<= 992px) */
+@media (max-width: 992px) {
+    .app-layout {
+        padding: 1.25rem 1.5rem;
+    }
+
+    .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .sidebyside-container {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
+}
+
 /* Standard Mobile Devices & Phablets (<= 768px) */
 @media (max-width: 768px) {
+    html, body {
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
+
     .app-layout {
         padding: 0.75rem 0.85rem;
+        width: 100%;
+        box-sizing: border-box;
+        overflow-x: hidden;
     }
 
     /* Header */
     .app-header {
         flex-direction: column;
         align-items: stretch;
-        gap: 0.85rem;
-        padding-bottom: 1rem;
-        margin-bottom: 1.25rem;
+        gap: 0.75rem;
+        padding-bottom: 0.85rem;
+        margin-bottom: 1rem;
     }
 
     .header-left {
@@ -2002,83 +2050,110 @@ body.orbit-body {
         justify-content: space-between;
         align-items: center;
         flex-wrap: wrap;
-        gap: 0.5rem;
+        gap: 0.4rem;
     }
 
     .telemetry-pill, .status-indicator-pill {
-        padding: 0.35rem 0.65rem;
-        font-size: 0.7rem;
+        padding: 0.3rem 0.6rem;
+        font-size: 0.68rem;
+    }
+
+    .theme-toggle-btn {
+        padding: 0.25rem 0.65rem;
+        font-size: 0.72rem;
     }
 
     /* Hero Banner */
     .platform-banner {
         flex-direction: column;
         align-items: stretch;
-        padding: 1.25rem 1rem;
-        gap: 1rem;
-        margin-bottom: 1.25rem;
+        padding: 1.1rem 0.9rem;
+        gap: 0.85rem;
+        margin-bottom: 1rem;
+        box-sizing: border-box;
     }
 
     .banner-title {
-        font-size: 1.25rem;
+        font-size: 1.2rem;
     }
 
     .banner-subtitle {
-        font-size: 0.82rem;
-        line-height: 1.5;
+        font-size: 0.8rem;
+        line-height: 1.45;
     }
 
     #btn-load-sample {
         width: 100%;
         justify-content: center;
-        padding: 0.75rem 1rem;
+        padding: 0.7rem 1rem;
+        min-height: 44px;
+        font-size: 0.82rem;
     }
 
     /* Upload Grid */
     .upload-grid {
         grid-template-columns: 1fr;
         gap: 0.85rem;
-        margin-bottom: 1.25rem;
+        margin-bottom: 1rem;
     }
 
     .flow-divider {
         display: none !important;
     }
 
+    .upload-card {
+        border-radius: var(--radius-md);
+        box-sizing: border-box;
+    }
+
+    .card-header {
+        padding: 0.75rem 0.95rem;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+    }
+
     .dropzone {
-        min-height: 180px;
-        margin: 0.85rem;
+        min-height: 160px;
+        margin: 0.65rem;
+        box-sizing: border-box;
     }
 
     .dropzone-empty {
-        padding: 1.25rem 1rem;
-        gap: 0.5rem;
+        padding: 1.1rem 0.85rem;
+        gap: 0.4rem;
     }
 
     .dropzone-icon-circle {
-        width: 44px;
-        height: 44px;
+        width: 40px;
+        height: 40px;
     }
 
     .dropzone-icon-circle svg {
-        width: 20px;
-        height: 20px;
+        width: 18px;
+        height: 18px;
     }
 
     .dropzone-primary-text {
-        font-size: 0.88rem;
+        font-size: 0.85rem;
     }
 
     .dropzone-secondary-text {
-        font-size: 0.78rem;
+        font-size: 0.75rem;
+    }
+
+    .card-footer {
+        padding: 0.6rem 0.85rem;
+        gap: 0.5rem;
+        font-size: 0.72rem;
+        box-sizing: border-box;
     }
 
     /* Ingestion Action Bar */
     .ingestion-action-bar {
         flex-direction: column-reverse;
         align-items: stretch;
-        gap: 0.75rem;
-        margin-bottom: 1.5rem;
+        gap: 0.65rem;
+        margin-bottom: 1.25rem;
     }
 
     .cta-group {
@@ -2089,33 +2164,46 @@ body.orbit-body {
         width: 100%;
         min-height: 48px;
         justify-content: center;
-        font-size: 0.95rem;
+        font-size: 0.92rem;
     }
 
     #btn-clear-all {
         width: 100%;
-        min-height: 42px;
+        min-height: 40px;
         justify-content: center;
+        font-size: 0.85rem;
     }
 
-    /* Inspection Top Header Bar */
+    /* Inspection Top Header Bar - FIXED OVERFLOW */
     .inspection-header-bar {
         flex-direction: column;
         align-items: stretch;
         gap: 0.75rem;
-        padding: 0.85rem 1rem;
-        margin-bottom: 1.25rem;
+        padding: 0.75rem 0.85rem;
+        margin-bottom: 1rem;
+        border-radius: var(--radius-md);
+        box-sizing: border-box;
     }
 
     .bar-left {
         width: 100%;
+        display: flex;
+        align-items: center;
         justify-content: space-between;
+        gap: 0.5rem;
     }
 
     #btn-back-to-ingest {
         flex: 1;
         justify-content: center;
-        min-height: 40px;
+        min-height: 38px;
+        font-size: 0.76rem;
+    }
+
+    .session-pill {
+        font-size: 0.68rem;
+        padding: 0.3rem 0.55rem;
+        white-space: nowrap;
     }
 
     .bar-center {
@@ -2124,8 +2212,11 @@ body.orbit-body {
 
     .segmented-control {
         width: 100%;
-        justify-content: space-between;
-        padding: 0.2rem;
+        display: flex;
+        gap: 0.25rem;
+        padding: 0.25rem;
+        box-sizing: border-box;
+        overflow: hidden;
     }
 
     .segmented-label {
@@ -2134,94 +2225,185 @@ body.orbit-body {
 
     .segment-btn {
         flex: 1;
+        min-width: 0;
         justify-content: center;
-        padding: 0.4rem 0.5rem;
+        padding: 0.45rem 0.35rem;
         font-size: 0.72rem;
         gap: 0.25rem;
+        text-align: center;
+        white-space: nowrap;
     }
 
     .pill-chip {
-        font-size: 0.6rem;
-        padding: 0.1rem 0.35rem;
+        font-size: 0.55rem;
+        padding: 0.1rem 0.3rem;
+        white-space: nowrap;
     }
 
+    /* Bar Right Stacked - PREVENTS HORIZONTAL FRAME OVERFLOW */
     .bar-right {
         width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.65rem;
+    }
+
+    .cutoff-control {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        padding: 0.45rem 0.75rem;
+        box-sizing: border-box;
+    }
+
+    .cutoff-control .control-label {
+        font-size: 0.75rem;
+        white-space: nowrap;
+    }
+
+    .cutoff-control .sleek-slider {
+        flex: 1;
+        min-width: 60px;
+        margin: 0 0.4rem;
+    }
+
+    .cutoff-val {
+        font-size: 0.75rem;
+        min-width: 28px;
+    }
+
+    .btn-reanalyze {
+        min-height: 32px;
+        padding: 0.3rem 0.75rem;
+        font-size: 0.75rem;
+        white-space: nowrap;
     }
 
     .btn-benchmark {
         width: 100%;
         justify-content: center;
-        min-height: 40px;
+        min-height: 42px;
+        font-size: 0.8rem;
     }
 
     /* Executive Intelligence Summary Card */
     .insight-summary-card {
-        padding: 1.1rem 1.2rem;
-        gap: 0.4rem;
+        padding: 1rem 1.1rem;
+        gap: 0.35rem;
         border-left-width: 4px;
-        margin-bottom: 1.25rem;
+        margin-bottom: 1rem;
+        border-radius: var(--radius-md);
+        box-sizing: border-box;
+    }
+
+    .insight-top-meta {
+        gap: 0.45rem;
+    }
+
+    .insight-severity-pill, .insight-driver-pill {
+        font-size: 0.65rem;
+        padding: 0.15rem 0.5rem;
     }
 
     .insight-headline {
-        font-size: 1.15rem;
+        font-size: 1.1rem;
         line-height: 1.35;
+        word-break: break-word;
     }
 
     .insight-text {
-        font-size: 0.84rem;
-        line-height: 1.55;
+        font-size: 0.82rem;
+        line-height: 1.5;
     }
 
-    /* KPI Grid */
+    /* KPI Grid - 2 Column Grid for Touch */
     .kpi-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 0.65rem;
-        margin-bottom: 1.25rem;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
     }
 
     .kpi-card {
-        padding: 0.85rem 0.95rem;
-        gap: 0.25rem;
+        padding: 0.7rem 0.75rem;
+        gap: 0.2rem;
+        border-radius: var(--radius-md);
+        box-sizing: border-box;
+    }
+
+    .kpi-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .kpi-label {
-        font-size: 0.72rem;
+        font-size: 0.68rem;
+        line-height: 1.25;
+    }
+
+    .kpi-icon-pill {
+        width: 24px;
+        height: 24px;
+    }
+
+    .kpi-icon-pill svg {
+        width: 12px;
+        height: 12px;
     }
 
     .kpi-value {
-        font-size: 1.45rem;
+        font-size: 1.3rem;
     }
 
     .kpi-meta {
-        font-size: 0.68rem;
+        font-size: 0.65rem;
+        line-height: 1.25;
     }
 
     /* Visualizer Section */
     .visualizer-card {
-        margin-bottom: 1.25rem;
+        margin-bottom: 1rem;
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        box-sizing: border-box;
     }
 
     .viewport-toolbar {
         flex-direction: column;
         align-items: stretch;
-        gap: 0.6rem;
-        padding: 0.75rem 0.85rem;
+        gap: 0.5rem;
+        padding: 0.65rem 0.75rem;
     }
 
     .view-tabs {
         width: 100%;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
-        gap: 0.4rem;
-        padding-bottom: 3px;
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 0.35rem;
+        padding-bottom: 4px;
+        scrollbar-width: none;
+    }
+
+    .view-tabs::-webkit-scrollbar {
+        display: none;
     }
 
     .tab-pill {
         flex-shrink: 0;
         white-space: nowrap;
-        font-size: 0.75rem;
-        padding: 0.45rem 0.75rem;
+        font-size: 0.72rem;
+        padding: 0.45rem 0.65rem;
+        gap: 0.35rem;
+    }
+
+    .tab-pill .tab-icon {
+        width: 14px;
+        height: 14px;
     }
 
     .viewport-hint {
@@ -2229,145 +2411,270 @@ body.orbit-body {
     }
 
     .viewport-canvas-wrapper {
-        padding: 0.65rem;
+        padding: 0.5rem;
         min-height: auto;
+        box-sizing: border-box;
+        overflow: hidden;
     }
 
-    /* Curtain Reveal Scanner on Mobile */
-    .curtain-controls-bar {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.65rem;
-        padding: 0.75rem 0.85rem;
-    }
-
-    .curtain-mode-switch {
-        width: 100%;
-        justify-content: space-between;
-    }
-
-    .btn-curtain-mode {
-        flex: 1;
-        text-align: center;
-        justify-content: center;
-        font-size: 0.72rem;
-        padding: 0.4rem 0.5rem;
-    }
-
-    .curtain-slider-wrapper {
-        width: 100%;
-        justify-content: space-between;
-    }
-
-    .curtain-range {
-        flex: 1;
-        min-width: 120px;
-    }
-
-    .curtain-stage {
-        width: 100%;
-        aspect-ratio: 1 / 1;
-        touch-action: pan-y;
-    }
-
-    .viewport-badge {
-        font-size: 0.65rem;
-        padding: 0.25rem 0.55rem;
-        bottom: 8px;
-    }
-
-    .badge-left {
-        left: 8px;
-    }
-
-    .badge-right {
-        right: 8px;
-    }
-
-    /* 3-Way Side-by-Side on Mobile */
+    /* 1. 3-Way Side-by-Side on Mobile */
     .sidebyside-container {
         grid-template-columns: 1fr;
-        gap: 1rem;
+        gap: 0.85rem;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .sidebyside-pane {
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .sidebyside-pane .pane-header {
+        padding: 0.6rem 0.75rem;
+    }
+
+    .pane-step-badge {
+        font-size: 0.62rem;
+        padding: 0.1rem 0.4rem;
+    }
+
+    .pane-step-title {
+        font-size: 0.82rem;
     }
 
     .sidebyside-pane .pane-body {
         aspect-ratio: 1 / 1;
+        width: 100%;
+        max-height: calc(100vw - 2.5rem);
+        box-sizing: border-box;
     }
 
-    /* Layer Inspector on Mobile */
-    .layer-sub-bar {
+    .pane-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .sidebyside-pane .pane-footer {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.7rem;
+    }
+
+    /* 2. Curtain Reveal Scanner on Mobile */
+    .curtain-controls-bar {
         flex-direction: column;
         align-items: stretch;
-        gap: 0.65rem;
-        padding: 0.75rem 0.85rem;
+        gap: 0.6rem;
+        padding: 0.65rem 0.75rem;
+        box-sizing: border-box;
     }
 
-    .layer-buttons {
+    .curtain-mode-switch {
         width: 100%;
-        justify-content: space-between;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.35rem;
     }
 
-    .btn-layer {
-        flex: 1;
+    .curtain-mode-switch .control-label {
+        grid-column: 1 / -1;
+        font-size: 0.72rem;
+        margin-bottom: 2px;
+    }
+
+    .btn-curtain-mode {
+        width: 100%;
         text-align: center;
         justify-content: center;
-        font-size: 0.72rem;
-        padding: 0.4rem 0.5rem;
+        font-size: 0.7rem;
+        padding: 0.45rem 0.35rem;
+        min-height: 36px;
+        white-space: normal;
+        line-height: 1.2;
     }
 
-    .opacity-slider-box {
+    .curtain-slider-wrapper {
         width: 100%;
+        display: flex;
+        align-items: center;
         justify-content: space-between;
+        gap: 0.5rem;
     }
 
-    .opacity-slider-box .sleek-slider {
+    .curtain-range {
         flex: 1;
-        min-width: 100px;
+        min-width: 80px;
+    }
+
+    .curtain-stage {
+        width: 100%;
+        max-width: 100%;
+        aspect-ratio: 1 / 1;
+        max-height: calc(100vw - 2.5rem);
+        touch-action: none;
+        box-sizing: border-box;
+        border-radius: var(--radius-md);
+    }
+
+    .viewport-badge {
+        font-size: 0.6rem;
+        padding: 0.2rem 0.45rem;
+        bottom: 6px;
+        max-width: 44%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .badge-left {
+        left: 6px;
+    }
+
+    .badge-right {
+        right: 6px;
+    }
+
+    /* 3. Layer Inspector on Mobile */
+    .layer-container {
+        gap: 0.75rem;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .layer-stage {
         width: 100%;
         aspect-ratio: 1 / 1;
+        max-height: calc(100vw - 2.5rem);
+        box-sizing: border-box;
+        border-radius: var(--radius-md);
+    }
+
+    .layer-sub-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.6rem;
+        padding: 0.65rem 0.75rem;
+        box-sizing: border-box;
+    }
+
+    /* 2x2 Grid for 4 Layer Buttons - PREVENTS SQUEEZING & OVERFLOW */
+    .layer-buttons {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.35rem;
+    }
+
+    .btn-layer {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        padding: 0.45rem 0.35rem;
+        min-height: 36px;
+        white-space: normal;
+        line-height: 1.2;
+    }
+
+    .opacity-slider-box {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+    }
+
+    .opacity-slider-box .sleek-slider {
+        flex: 1;
+        min-width: 90px;
     }
 
     /* Change Manifest Cards on Mobile */
     .manifest-card {
-        margin-bottom: 1.25rem;
+        margin-bottom: 1rem;
+        border-radius: var(--radius-md);
+        box-sizing: border-box;
     }
 
     .manifest-header {
-        padding: 0.85rem 1rem;
+        padding: 0.75rem 0.85rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.3rem;
+    }
+
+    .manifest-title-group {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .manifest-title {
+        font-size: 0.92rem;
     }
 
     .manifest-grid {
         grid-template-columns: 1fr;
-        gap: 0.75rem;
-        padding: 0.85rem 1rem;
-        max-height: 380px;
+        gap: 0.65rem;
+        padding: 0.75rem 0.85rem;
+        max-height: 360px;
+        box-sizing: border-box;
     }
 
     .zone-card {
-        padding: 0.85rem 1rem;
+        padding: 0.75rem 0.85rem;
+        border-radius: var(--radius-md);
+        box-sizing: border-box;
+    }
+
+    .zone-top-row, .zone-tag-row {
+        flex-wrap: wrap;
+        gap: 0.35rem;
+    }
+
+    .zone-title {
+        font-size: 0.82rem;
+        word-break: break-word;
     }
 
     /* Benchmark Modal on Mobile */
+    .benchmark-card {
+        margin-bottom: 1rem;
+        border-radius: var(--radius-md);
+        box-sizing: border-box;
+    }
+
     .benchmark-header {
-        padding: 0.85rem 1rem;
+        padding: 0.75rem 0.85rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .benchmark-title {
+        font-size: 0.95rem;
+    }
+
+    .benchmark-desc {
+        font-size: 0.72rem;
     }
 
     .benchmark-body {
-        padding: 0.85rem 1rem;
+        padding: 0.75rem 0.85rem;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
     }
 
     .benchmark-table {
-        font-size: 0.75rem;
-        min-width: 320px;
+        font-size: 0.72rem;
+        min-width: 280px;
     }
 
     .benchmark-table th, .benchmark-table td {
-        padding: 0.55rem 0.65rem;
+        padding: 0.5rem 0.6rem;
     }
 
     /* Footer on Mobile */
@@ -2375,16 +2682,23 @@ body.orbit-body {
         flex-direction: column;
         align-items: center;
         text-align: center;
-        gap: 0.65rem;
-        padding-top: 1.25rem;
-        margin-top: 1.5rem;
+        gap: 0.6rem;
+        padding: 1.25rem 0.5rem;
+        margin-top: 1rem;
+    }
+
+    .footer-right {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.35rem;
     }
 }
 
 /* Small Smartphone Displays (<= 480px) */
 @media (max-width: 480px) {
     .app-layout {
-        padding: 0.5rem 0.65rem;
+        padding: 0.45rem 0.55rem;
     }
 
     .brand-name {
@@ -2400,32 +2714,66 @@ body.orbit-body {
     }
 
     .banner-title {
-        font-size: 1.15rem;
+        font-size: 1.12rem;
     }
 
     .banner-subtitle {
-        font-size: 0.78rem;
+        font-size: 0.76rem;
     }
 
     .kpi-value {
-        font-size: 1.35rem;
+        font-size: 1.22rem;
     }
 
     .kpi-card {
-        padding: 0.75rem 0.8rem;
+        padding: 0.6rem 0.65rem;
     }
 
     .insight-headline {
-        font-size: 1.05rem;
+        font-size: 1.02rem;
     }
 
     .curtain-handle {
-        width: 38px;
-        height: 38px;
+        width: 36px;
+        height: 36px;
     }
 
     .curtain-handle svg {
-        width: 18px;
-        height: 18px;
+        width: 16px;
+        height: 16px;
+    }
+
+    .btn-success, .btn-cta-main {
+        font-size: 0.88rem;
+        padding: 0.7rem 1rem;
+    }
+}
+
+/* Extra Narrow Displays (<= 360px) */
+@media (max-width: 360px) {
+    .app-layout {
+        padding: 0.35rem 0.45rem;
+    }
+
+    .kpi-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .segmented-control {
+        flex-direction: column;
+        border-radius: var(--radius-md);
+    }
+
+    .segment-btn {
+        border-radius: var(--radius-sm);
+        padding: 0.4rem 0.5rem;
+    }
+
+    .curtain-mode-switch {
+        grid-template-columns: 1fr;
+    }
+
+    .layer-buttons {
+        grid-template-columns: 1fr;
     }
 }
