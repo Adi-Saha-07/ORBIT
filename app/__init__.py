@@ -29,3 +29,6 @@ def create_app(test_config=None):
     app.register_blueprint(main_bp)
 
     return app
+
+# Expose app at module level for gunicorn "app:app" default start command
+app = create_app()
