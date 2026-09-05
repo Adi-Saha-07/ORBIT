@@ -7,8 +7,9 @@ image ingestion with comprehensive validation.
 
 import os
 import uuid
+import json
 import datetime
-from flask import Blueprint, render_template, request, jsonify, current_app, send_from_directory
+from flask import Blueprint, render_template, request, jsonify, current_app, send_from_directory, send_file
 from werkzeug.utils import secure_filename
 
 from app.core.validator import validate_image_pair
@@ -17,6 +18,7 @@ from app.core.aligner import align_images_orb
 from app.core.detector import detect_changes, detect_changes_ssim
 from app.core.metrics import compute_change_metrics
 from app.core.visualizer import generate_diff_heatmap, create_diff_overlay, save_image_bgr
+from app.core.report_generator import generate_pdf_report
 
 main_bp = Blueprint("main", __name__)
 
@@ -219,7 +221,7 @@ def analyze_session():
     is_fallback = bool(detection_metrics.get("fallback_applied", False))
     pipeline_name = "DEEP_LEARNING_SIAMESE_UNET_V2" if (model_type == "siamese_unet" and not is_fallback) else "CLASSICAL_ORB_SSIM_V1"
 
-    return jsonify({
+    response_payload = {
         "success": True,
         "session_id": session_id,
         "pipeline": pipeline_name,
@@ -233,8 +235,20 @@ def analyze_session():
             "aligned_url": f"/uploads/{clean_session_id}/aligned.png",
             "heatmap_url": f"/uploads/{clean_session_id}/diff_heatmap.png",
             "overlay_url": f"/uploads/{clean_session_id}/diff_overlay.png",
+            "report_url": f"/api/report/{clean_session_id}/pdf",
         },
-    }), 200
+        "created_at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC"),
+    }
+
+    # Persist results metadata to disk so PDF report generator can retrieve full telemetry
+    try:
+        results_json_path = os.path.join(session_dir, "analysis_results.json")
+        with open(results_json_path, "w", encoding="utf-8") as jf:
+            json.dump(response_payload, jf, indent=2)
+    except Exception as e:
+        current_app.logger.warning(f"Could not cache analysis_results.json: {e}")
+
+    return jsonify(response_payload), 200
 
 @main_bp.route("/api/benchmark", methods=["POST"])
 def benchmark_session():
@@ -312,3 +326,32 @@ def serve_sample(filename):
     """Serves bundled sample satellite imagery for testing."""
     samples_dir = os.path.join(os.path.abspath(os.path.dirname(os.path.dirname(__file__))), "samples")
     return send_from_directory(samples_dir, secure_filename(filename))
+
+@main_bp.route("/api/report/<session_id>/pdf", methods=["GET"])
+def download_report_pdf(session_id):
+    """
+    Compiles and streams a publication-grade GEOINT change intelligence PDF report.
+    """
+    clean_session_id = secure_filename(session_id)
+    session_dir = os.path.join(current_app.config["UPLOAD_FOLDER"], clean_session_id)
+
+    if not os.path.isdir(session_dir):
+        return jsonify({
+            "success": False,
+            "error": f"Session '{session_id}' not found or expired.",
+        }), 404
+
+    try:
+        pdf_path = generate_pdf_report(session_dir=session_dir, session_id=clean_session_id)
+        download_filename = f"ORBIT_GEOINT_Report_{clean_session_id}.pdf"
+        return send_file(
+            pdf_path,
+            mimetype="application/pdf",
+            as_attachment=True,
+            download_name=download_filename,
+        )
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "error": f"Failed to generate PDF report: {str(e)}",
+        }), 500

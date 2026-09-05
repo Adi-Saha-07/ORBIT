@@ -515,6 +515,64 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // ========================================================
+    // GEOINT PDF REPORT DOWNLOAD HANDLER
+    // ========================================================
+    const btnDownloadPdf = document.getElementById("btn-download-pdf");
+
+    async function triggerPdfDownload(sourceBtn) {
+        if (!currentSessionId) {
+            alert("No active satellite session to generate report. Please run analysis first.");
+            return;
+        }
+
+        const originalHtml = sourceBtn ? sourceBtn.innerHTML : null;
+        if (sourceBtn) {
+            sourceBtn.disabled = true;
+            sourceBtn.innerHTML = `
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: spin 1s linear infinite;">
+                    <circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle>
+                    <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"></path>
+                </svg>
+                <span>Generating PDF...</span>
+            `;
+        }
+
+        try {
+            log(`Compiling publication-grade GEOINT PDF report for session ${currentSessionId}...`, "info");
+            const response = await fetch(`/api/report/${currentSessionId}/pdf`);
+            if (!response.ok) {
+                const errData = await response.json().catch(() => ({}));
+                throw new Error(errData.error || `Server returned HTTP ${response.status}`);
+            }
+
+            const blob = await response.blob();
+            const blobUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.style.display = "none";
+            a.href = blobUrl;
+            a.download = `ORBIT_GEOINT_Report_${currentSessionId}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(blobUrl);
+            a.remove();
+
+            log("GEOINT intelligence PDF report successfully compiled and downloaded.", "success");
+        } catch (err) {
+            alert(`Failed to download PDF report: ${err.message}`);
+            log(`PDF generation error: ${err.message}`, "error");
+        } finally {
+            if (sourceBtn && originalHtml) {
+                sourceBtn.disabled = false;
+                sourceBtn.innerHTML = originalHtml;
+            }
+        }
+    }
+
+    if (btnDownloadPdf) {
+        btnDownloadPdf.addEventListener("click", () => triggerPdfDownload(btnDownloadPdf));
+    }
+
     // Back to Ingestion button
     btnBackToIngest.addEventListener("click", () => {
         sectionInspection.classList.add("hidden");

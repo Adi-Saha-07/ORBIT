@@ -1063,6 +1063,78 @@ body.orbit-body {
     box-shadow: 0 0 12px rgba(217, 119, 6, 0.3);
 }
 
+.btn-download-pdf {
+    background: linear-gradient(135deg, var(--primary) 0%, #1d4ed8 100%);
+    border: 1px solid rgba(37, 99, 235, 0.5);
+    color: #fff;
+    border-radius: var(--radius-md);
+    padding: 0.45rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+}
+
+.btn-download-pdf:hover {
+    background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+}
+
+.btn-download-pdf:active {
+    transform: translateY(0);
+}
+
+.btn-download-pdf:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-download-pdf-compact {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-card);
+    color: var(--primary);
+    border-radius: var(--radius-sm);
+    padding: 0.25rem 0.65rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: all 0.2s ease;
+}
+
+.btn-download-pdf-compact:hover {
+    background: var(--primary-light);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.btn-download-pdf-compact:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.insight-top-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.insight-meta-left {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
 /* ==========================================================================
    KPI TELEMETRY GRID
    ========================================================================== */
@@ -2287,6 +2359,13 @@ body.orbit-body {
         justify-content: center;
         min-height: 42px;
         font-size: 0.8rem;
+    }
+
+    .btn-download-pdf {
+        width: 100%;
+        justify-content: center;
+        min-height: 42px;
+        font-size: 0.82rem;
     }
 
     /* Executive Intelligence Summary Card */
